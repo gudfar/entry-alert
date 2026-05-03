@@ -15,7 +15,7 @@ def build_scheduler(bot: Bot) -> AsyncIOScheduler:
     scheduler.add_job(
         run_price_check,
         trigger="interval",
-        minutes=1,
+        minutes=60,
         args=[bot],
         id="price_check",
         name="Hourly price check",
