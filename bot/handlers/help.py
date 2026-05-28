@@ -11,6 +11,8 @@ HELP_TEXT = (
     "🔔 /setalert — Set alert threshold\n"
     "  `/setalert BTC 20` — alert at 20% deviation, silence 24h\n"
     "  `/setalert BTC 20 12` — same, re-alert after 12h\n\n"
+    "💡 /recommend AMOUNT — Best DCA pick for your budget\n"
+    "  e.g. `/recommend 200` — where to put $200 right now\n\n"
     "❓ /help — Show this message\n\n"
     "_⏱ Alerts fire at most once per direction (below/above) per coin per silence window._"
 )

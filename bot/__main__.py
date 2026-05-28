@@ -14,6 +14,7 @@ from bot.handlers.add import add
 from bot.handlers.mystats import mystats
 from bot.handlers.setalert import setalert
 from bot.handlers.help import help_command
+from bot.handlers.recommend import recommend
 from bot.scheduler import build_scheduler
 
 load_dotenv()
@@ -39,6 +40,7 @@ async def main() -> None:
     app.add_handler(CommandHandler("mystats", mystats))
     app.add_handler(CommandHandler("setalert", setalert))
     app.add_handler(CommandHandler("help", help_command))
+    app.add_handler(CommandHandler("recommend", recommend))
 
     # Build and start scheduler
     scheduler = build_scheduler(app.bot)
