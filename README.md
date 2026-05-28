@@ -7,9 +7,10 @@ Telegram bot that alerts crypto DCA investors when the market price deviates sig
 ## Features
 
 - Log trades manually via `/add`
-- View your weighted average entry and live deviation via `/mystats`
+- View your weighted average entry, live deviation, and unrealized PnL via `/mystats`
+- Smart DCA allocation — `/recommend $200` tells you which coin to buy and why
 - Configurable alert threshold and silence window per coin via `/setalert`
-- Hourly price checks via CoinGecko free tier (batched, no API key required)
+- Hourly price checks via CoinGecko (batched, one request per cycle)
 - Alerts fire independently for `below` and `above` directions
 - PostgreSQL persistence — no alert spam (per-direction silence window)
 
@@ -19,7 +20,8 @@ Telegram bot that alerts crypto DCA investors when the market price deviates sig
 |---------|-------------|
 | `/start` | Register and show welcome |
 | `/add BTC 0.5 45000` | Log a trade: coin, amount, price |
-| `/mystats` | Show avg entry + live deviation per coin |
+| `/mystats` | Show avg entry, live deviation, unrealized PnL |
+| `/recommend 200` | Smart DCA pick for $200 budget |
 | `/setalert BTC 20` | Alert when BTC moves 20% from your avg (24h silence) |
 | `/setalert BTC 20 12` | Same, but re-alert after 12h |
 | `/help` | Show command reference |
@@ -56,7 +58,7 @@ The bot runs migrations automatically on first boot — no manual SQL step neede
 |----------|----------|-------------|
 | `TELEGRAM_TOKEN` | Yes | Bot token from @BotFather |
 | `DATABASE_URL` | Yes | PostgreSQL connection string |
-| `COINGECKO_API_KEY` | No | CoinGecko Pro key (free tier works without it) |
+| `COINGECKO_API_KEY` | No | CoinGecko Demo key — recommended for stable 30 req/min |
 
 ### Local PostgreSQL with Docker
 
@@ -121,6 +123,7 @@ entry-alert/
 │       ├── add.py
 │       ├── mystats.py
 │       ├── setalert.py
+│       ├── recommend.py
 │       └── help.py
 ├── migrations/
 │   └── 001_initial.sql

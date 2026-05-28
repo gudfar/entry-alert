@@ -2,9 +2,9 @@
 
 Current implementation state of entry-alert.
 
-## Status: MVP Complete
+## Status: MVP Complete + Post-MVP features
 
-Full bot implemented, running locally. All source files created and verified.
+Full bot implemented, deployed on Railway. All source files created and verified.
 
 ## Completed
 
@@ -17,13 +17,15 @@ Full bot implemented, running locally. All source files created and verified.
 - [x] bot/coingecko.py — batch price fetch, SYMBOL_TO_ID (20 coins)
 - [x] bot/handlers/start.py — /start, upsert user
 - [x] bot/handlers/add.py — /add COIN AMOUNT PRICE, Decimal parsing, validation
-- [x] bot/handlers/mystats.py — /mystats with live deviation, 📈/📉 arrows
+- [x] bot/handlers/mystats.py — /mystats with live deviation, 📈/📉 arrows, total unrealized PnL
 - [x] bot/handlers/setalert.py — /setalert COIN PCT [SILENCE_HOURS]
+- [x] bot/handlers/recommend.py — /recommend AMOUNT, smart DCA allocation scoring
 - [x] bot/handlers/help.py — /help, clean formatting
 - [x] bot/alerts.py — deviation calc, per-user silence window, alert dispatch
-- [x] bot/scheduler.py — APScheduler, configurable interval
+- [x] bot/scheduler.py — APScheduler, 60-min interval
 - [x] bot/__main__.py — entrypoint, wires app + scheduler, graceful shutdown
 - [x] README.md
+- [x] Deployed on Railway
 
 ## Key Implementation Details
 
@@ -33,10 +35,19 @@ Full bot implemented, running locally. All source files created and verified.
 - Migrations run automatically on boot via `_run_migrations()` — `ADD COLUMN IF NOT EXISTS` handles existing deployments
 - CoinGecko free tier: batch all coins in single /simple/price call per cycle
 - Graceful shutdown via SIGINT/SIGTERM signal handlers
+- COINGECKO_API_KEY env var supported — set to Demo key to get stable 30 req/min
+
+## /recommend scoring logic
+
+score = abs(deviation_pct) / position_value_usd
+
+Only coins below avg entry are candidates. Sorted by score descending — prioritises
+underweighted positions with large drawdowns. If all coins above avg → "not the best time for DCA".
 
 ## Next Up
 
 - [ ] tests/ — unit tests for deviation logic, handler validation, db helpers
+- [ ] Binance API integration — auto-import trades via /connect binance
 
 ## Change Log
 
@@ -54,3 +65,11 @@ Full bot implemented, running locally. All source files created and verified.
 - was_alerted_recently() uses per-user silence_hours instead of hardcoded 24h
 - README.md created
 - deps: asyncpg bumped to 0.30.0
+
+### 2026-05-05
+- Deployed on Railway with managed PostgreSQL
+- COINGECKO_API_KEY added to Railway env vars (Demo plan, 30 req/min)
+- /mystats: added total unrealized PnL at the bottom
+- /recommend command added — smart DCA allocation by score = deviation% / position_value
+- /recommend: above-avg coins shown at bottom as non-candidates
+- Cosmetic fixes: removed extra newlines after section headers

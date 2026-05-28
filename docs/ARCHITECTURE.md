@@ -109,8 +109,9 @@ Alert message format:
 |---------|------|-------------|
 | /start | — | Register user, show welcome |
 | /add | COIN AMOUNT PRICE | Log a trade (e.g. /add BTC 0.5 45000) |
-| /mystats | — | Show avg entry + current deviation per coin |
-| /setalert | COIN THRESHOLD_PCT | Set alert threshold (e.g. /setalert BTC 20) |
+| /mystats | — | Show avg entry, live deviation, unrealized PnL |
+| /setalert | COIN THRESHOLD_PCT [SILENCE_HOURS] | Set alert threshold (e.g. /setalert BTC 20 12) |
+| /recommend | AMOUNT | Smart DCA pick for budget (e.g. /recommend 200) |
 | /help | — | Show command reference |
 
 ## Non-Functional Requirements
@@ -133,6 +134,7 @@ entry-alert/
 │   │   ├── add.py
 │   │   ├── mystats.py
 │   │   ├── setalert.py
+│   │   ├── recommend.py
 │   │   └── help.py
 │   ├── scheduler.py      # APScheduler setup + price check job
 │   ├── coingecko.py      # CoinGecko API client
