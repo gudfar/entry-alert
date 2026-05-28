@@ -84,14 +84,14 @@ async def recommend(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     candidates.sort(key=lambda x: x["score"], reverse=True)
     best = candidates[0]
 
-    lines = [f"💡 *Recommended: invest ${invest_amount:,.2f} in {best['coin']}*\n"]
+    lines = [f"💡 *Recommended: invest ${invest_amount:,.2f} in {best['coin']}*"]
 
     for c in candidates:
         sign = "+" if c["avg_change"] >= 0 else "-"
         lines.append(
             f"*{c['coin']}*  📉 {abs(c['deviation_pct']):.1f}% below avg\n"
-            f"  Avg entry now:  ${c['avg']:,.2f}\n"
-            f"  Avg entry after: ${c['new_avg']:,.2f}  ({sign}${abs(c['avg_change']):,.2f})"
+            f" Avg entry now:  ${c['avg']:,.2f}\n"
+            f" Avg entry after: ${c['new_avg']:,.2f}  ({sign}${abs(c['avg_change']):,.2f})"
         )
 
     if above_avg:
@@ -100,7 +100,7 @@ async def recommend(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             sign = "+" if c["avg_change"] >= 0 else "-"
             lines.append(
                 f"*{c['coin']}*  📈 {c['deviation_pct']:.1f}% above avg\n"
-                f"  Avg entry after: ${c['new_avg']:,.2f}  ({sign}${abs(c['avg_change']):,.2f})"
+                f" Avg entry after: ${c['new_avg']:,.2f}  ({sign}${abs(c['avg_change']):,.2f})"
             )
 
     await update.message.reply_text("\n\n".join(lines), parse_mode="Markdown")

@@ -20,7 +20,7 @@ async def mystats(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     except Exception:
         prices = {}
 
-    lines = ["📊 *Your portfolio stats:*\n"]
+    lines = ["📊 *Your portfolio stats:*"]
     total_pnl = 0.0
     has_prices = False
 
